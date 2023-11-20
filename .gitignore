@@ -1,0 +1,5 @@
+# Removing VScode files.
+.vscode
+
+# Avoiding downloads to be included.
+downloads/*
