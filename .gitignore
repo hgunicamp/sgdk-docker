@@ -3,3 +3,6 @@
 
 # Avoiding downloads to be included.
 downloads/*
+
+# Avoiding the sgdk package to be incuded in the in the repository.
+platform/sgdk

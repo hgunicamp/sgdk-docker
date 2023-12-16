@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  # Original SGDK Library
+  sgdk_lib:
+    container_name: sgdk_lib
+    build: ./sgdk
+
+  # Emulator and Debbuger.
+  sgdk_debug_server:
+    container_name: sgdk_debug_server
+    build: ./sgdk_debug_server
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    network_mode: host
