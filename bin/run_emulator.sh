@@ -9,12 +9,14 @@ PROJECT_DIR="${SCRIPT_DIR}/../projects/${1}"
 HOME="${PROJECT_DIR}/home"
 ROM_FILE="/src/out/rom.bin"
 BLASTEM="/usr/games/blastem"
+MODE="${2}"
 
 # Allowing X11 connection.
 xhost +local:"${USERNAME}"
 
 # Starting the emulator with the rom.
 docker run \
+  -it \
   --rm \
   --device /dev/dri \
   --device /dev/input \
@@ -27,7 +29,7 @@ docker run \
   -v "${PROJECT_DIR}:/src" \
   -v "${HOME}:/home/remote" \
   --entrypoint "${BLASTEM}" \
-  platform-sgdk_debug_server
+  platform-sgdk_debug_server "${ROM_FILE}" "${MODE}"
 
 # Revoking X11 connection.
 xhost -local:"${USERNAME}"
