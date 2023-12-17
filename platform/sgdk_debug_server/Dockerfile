@@ -29,11 +29,7 @@ RUN \
   qt5-qmake \
   qtbase5-dev \
   gettext \
-  vim \
-  zsh \
-  zplug \
-  zsh-syntax-highlighting \
-  zsh-autosuggestions \
+  gdb \
   blastem \
   && rm -rf /var/lib/apt/lists/*
 
@@ -46,4 +42,3 @@ RUN cd /tmp && \
   make install && \
   cd /tmp && \
   rm -rf kdbg
-
