@@ -6,7 +6,10 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 PROJECT_DIR="${SCRIPT_DIR}/../projects/${1}"
 LOCAL_USER="$(id -u):$(id -g)"
 
-# Starting a new container.
+# Creating the project folder if necessary.
+[[ -d "${PROJECT_DIR}" ]]  || mkdir -p "${PROJECT_DIR}"
+
+# Using the SGDK original image to build the project.
 docker run \
   -u root \
   --rm \
