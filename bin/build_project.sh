@@ -7,7 +7,7 @@ PROJECT_DIR="${SCRIPT_DIR}/../projects/${1}"
 LOCAL_USER="$(id -u):$(id -g)"
 
 # Creating the project folder if necessary.
-[[ -d "${PROJECT_DIR}" ]]  || mkdir -p "${PROJECT_DIR}"
+[[ -d "${PROJECT_DIR}" ]]  || mkdir -p "${PROJECT_DIR}/home"
 
 # Using the SGDK original image to build the project.
 docker run \
