@@ -17,7 +17,7 @@ int main() {
     // Inserting foreground on screen.
     PRINT_BG(BG_A, PAL1, fg1, tile_index);
 
-    // Setting up scrooling configuratiion.
+    // Setting up scrooling configuration.
     VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
 
     // Main Loop.
