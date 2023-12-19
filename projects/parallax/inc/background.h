@@ -5,6 +5,7 @@
 #define PRINT_BG(layer_index, palette_index, resource, tile_index) do { \
     PAL_setPalette(palette_index, resource.palette->data, DMA); \
     VDP_drawImageEx(layer_index, &resource, TILE_ATTR_FULL(palette_index, FALSE, FALSE, FALSE, tile_index), 0, 0, FALSE, DMA); \
+    tile_index += resource.tileset->numTile; \
 } while(0)
 
 #endif

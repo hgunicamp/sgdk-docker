@@ -11,7 +11,6 @@ int main() {
     PRINT_BG(BG_B, PAL0, bg1, tile_index);
 
     // Inserting foreground on screen.
-    tile_index += bg1.tileset->numTile;
     PRINT_BG(BG_A, PAL1, fg1, tile_index);
 
     // Setting up scrooling configuratiion.
