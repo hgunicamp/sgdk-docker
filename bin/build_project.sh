@@ -5,7 +5,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 PROJECT_DIR="${SCRIPT_DIR}/../projects/${1}"
 LOCAL_USER="$(id -u):$(id -g)"
-MODE="${2:-all}"
+shift 1
 
 # Creating the project folder if necessary.
 [[ -d "${PROJECT_DIR}" ]]  || mkdir -p "${PROJECT_DIR}/home"
@@ -15,7 +15,7 @@ docker run \
   -u root \
   --rm \
   -v "${PROJECT_DIR}:/src" \
-  platform-sgdk_lib "${MODE}"
+  platform-sgdk_lib "$@"
 
 # Fixing files permission.
 # The SGDK container creates files using "ROOT" user.

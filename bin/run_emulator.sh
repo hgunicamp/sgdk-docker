@@ -9,7 +9,7 @@ PROJECT_DIR="${SCRIPT_DIR}/../projects/${1}"
 HOME="${PROJECT_DIR}/home"
 ROM_FILE="/src/out/rom.bin"
 BLASTEM="/usr/games/blastem"
-MODE="${2}"
+shift 2
 
 # Allowing X11 connection.
 xhost +local:"${USERNAME}"
@@ -29,7 +29,7 @@ docker run \
   -v "${PROJECT_DIR}:/src" \
   -v "${HOME}:/home/remote" \
   --entrypoint "${BLASTEM}" \
-  platform-sgdk_debug_server "${ROM_FILE}" "${MODE}"
+  platform-sgdk_debug_server "${ROM_FILE}"  "$@"
 
 # Revoking X11 connection.
 xhost -local:"${USERNAME}"
