@@ -2,7 +2,7 @@ This is a self study project.
 
 It intends to help me to practice the ideas published on the [Pigsy's Retro Game Dev Tutorials](https://www.youtube.com/@PigsysRetroGameDevTutorials) Youtube chanel, in his [Sega Genesis playlist](https://www.youtube.com/playlist?list=PL1xqkpO_SvY2_rSwHTBIBxXMqmek--GAb).
 
-It uses the original docker image found in the Window's official release of the [SDGK library](https://github.com/Stephane-D/SGDK), working together with another docker image which hosts the [Blastem emultor](https://www.retrodev.com/blastem/), providing a whole "Compiling" and "Run" environment.
+It uses the original docker image found in the Window's official release of the [SDGK library](https://github.com/Stephane-D/SGDK), working together with another docker image which hosts the [Blastem emulator](https://www.retrodev.com/blastem/), providing a whole "Compiling" and "Run" environment.
 
 Along with these images, a set of shell scripts are provided to help using the tools provided by the images.
 
