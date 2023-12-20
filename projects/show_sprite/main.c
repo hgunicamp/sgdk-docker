@@ -3,13 +3,14 @@
 #include "inc/background.h"
 #include "inc/sprite.h"
 
-// Parallax relative speed.
-#define LAYER_A_SPEED -2
-#define LAYER_B_SPEED -1
-
 int main() {
     u16 tile_index = TILE_USER_INDEX;
-    Sprite *sonic;
+    sprite_struct sonic;
+
+    // Initialising the sprite struct.
+    sonic.x_pos = 50;
+    sonic.y_pos = 150;
+    sonic.sprite_attributes = TILE_ATTR(PAL2, FALSE, FALSE, FALSE);
 
     // Inserting background on screen.
     PRINT_BG(BG_B, PAL0, bg1, tile_index);
@@ -18,7 +19,7 @@ int main() {
 
     // Sprit set up.
     INIT_SPRITE(PAL2, sonic_sprite);
-    ADD_SPRITE_ON(PAL2, sonic, sonic_sprite, 50, 150);
+    ADD_SPRITE(sonic_sprite, sonic);
 
     // Main Loop.
     while(1) {
