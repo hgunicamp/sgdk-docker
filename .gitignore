@@ -7,6 +7,10 @@ downloads/*
 # Avoiding the sgdk package to be incuded in the in the repository.
 platform/sgdk
 
-#Avoid project compilied objects.
+# Avoid project compilied objects.
 projects/**/out/*
 projects/**/home/*
+
+# Avoid github token.
+.github_token
+
