@@ -1,5 +1,5 @@
 #include <genesis.h>
-#include <resources.h>
+#include "res/resources.h"
 #include "inc/background.h"
 #include "inc/sprite.h"
 
@@ -21,8 +21,9 @@ int main() {
     PRINT_BG(background, tile_index);
     PRINT_BG(foreground, tile_index);
 
-    // Sprit set up.
-    INIT_SPRITE(PAL2, sonic_sprite);
+    // Sprite set up.
+    SPR_init();
+    INIT_SPRITE_PALETTE(PAL2, sonic_sprite);
     ADD_SPRITE(sonic_sprite, sonic);
 
     // Main Loop.
