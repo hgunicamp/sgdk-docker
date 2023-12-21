@@ -8,8 +8,7 @@ typedef struct {
     u16 sprite_attributes;
 } sprite_struct;
 
-#define INIT_SPRITE(palette_index, resource) do { \
-    SPR_init(); \
+#define INIT_SPRITE_PALETTE(palette_index, resource) do { \
     PAL_setPalette(palette_index, resource.palette->data, DMA); \
 } while(0)
 
