@@ -9,7 +9,7 @@ PROJECT_DIR="${SCRIPT_DIR}/../projects/${1}"
 HOME="${PROJECT_DIR}/home"
 ROM_FILE="/src/out/rom.bin"
 BLASTEM="/usr/games/blastem"
-shift 2
+shift 1
 
 # Allowing X11 connection.
 xhost +local:"${USERNAME}"
