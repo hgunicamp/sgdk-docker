@@ -29,7 +29,7 @@ RUN \
   qt5-qmake \
   qtbase5-dev \
   gettext \
-  gdb \
+  gdb-multiarch \
   blastem \
   && rm -rf /var/lib/apt/lists/*
 
