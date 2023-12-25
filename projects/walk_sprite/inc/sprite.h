@@ -15,16 +15,16 @@ typedef struct {
     u16 sprite_attributes;
 } sprite_struct;
 
-#define INIT_SPRITE_PALETTE(palette_index, resource) do { \
-    PAL_setPalette(palette_index, resource.palette->data, DMA); \
+#define INIT_SPRITE_PALETTE(palette_index, ptr_resource) do { \
+    PAL_setPalette(palette_index, ptr_resource->palette->data, DMA); \
 } while(0)
 
-#define INSTALL_SPRITE(resource, sprite_index, idle_animation) do { \
-    sprite_index.sprite = SPR_addSprite( \
-        &resource, sprite_index.x_pos, sprite_index.y_pos, sprite_index.sprite_attributes \
+#define INSTALL_SPRITE(ptr_resource, ptr_sprite_index, idle_animation) do { \
+    ptr_sprite_index->sprite = SPR_addSprite( \
+        ptr_resource, ptr_sprite_index->x_pos, ptr_sprite_index->y_pos, ptr_sprite_index->sprite_attributes \
     ); \
-    sprite_index.idle_animation_index = sprite_index.current_animation_index = idle_animation; \
-    SPR_setAnim(sprite_index.sprite, idle_animation); \
+    ptr_sprite_index->idle_animation_index = ptr_sprite_index->current_animation_index = idle_animation; \
+    SPR_setAnim(ptr_sprite_index->sprite, idle_animation); \
 } while(0)
 
 #endif
