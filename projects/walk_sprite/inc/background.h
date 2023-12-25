@@ -19,7 +19,7 @@ typedef struct {
 void background_init(background_struct *background, VDPPlane layer, u16 palette_index, const Image *resource);
 
 // Printing a background layer.
-#define PRINT_BG(background, tile_index) do { \
+#define PRINT_BG(background, tile_index, priority) do { \
     PAL_setPalette(\
         background.palette_index, \
         background.resource->palette->data, \
@@ -28,7 +28,7 @@ void background_init(background_struct *background, VDPPlane layer, u16 palette_
     VDP_drawImageEx( \
         background.layer_index, \
         background.resource, \
-        TILE_ATTR_FULL(background.palette_index, FALSE, FALSE, FALSE, tile_index), \
+        TILE_ATTR_FULL(background.palette_index, priority, FALSE, FALSE, tile_index), \
         background.x_pos, \
         background.y_pos, \
         FALSE, \
