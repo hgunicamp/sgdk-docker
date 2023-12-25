@@ -13,8 +13,8 @@ int main() {
     background_init(&foreground,  BG_A, PAL1, &fg1);
 
     // Inserting background on screen.
-    PRINT_BG(background, tile_index);
-    PRINT_BG(foreground, tile_index);
+    PRINT_BG(background, tile_index, FALSE);
+    PRINT_BG(foreground, tile_index, TRUE);
 
     // Sprite set up.
     SPR_init();
@@ -22,6 +22,7 @@ int main() {
 
     // Main Loop.
     while(1) {
+        update_axel_sprite(&axel);
         SPR_update();
         // End of the frame.
         SYS_doVBlankProcess();
