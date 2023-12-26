@@ -7,6 +7,7 @@
 
 #define AXEL_IDLE_ANIMATION 1
 #define AXEL_WALKING_ANIMATION 2
+#define AXEL_ACTACK_ANIMATION 3
 #define AXEL_INIT_X_POS 25
 #define AXEL_INIT_Y_POS 50
 #define AXEL_UP_WALKING_LIMT 0
@@ -23,27 +24,31 @@
 
 joystick_mediator_struct axel_joy_mediator;
 
-u16 axel_up_action(sprite_struct *axel) {
-    if (AXEL_ON_MAX_UP(axel->y_pos)) return 0;
+u16 axel_up_action(joystick_mediator_struct *mediator) {
+    sprite_struct *axel = mediator->sprite_index;
+    if (JOY_MEDIATOR_IS_LOCKED(mediator) || AXEL_ON_MAX_UP(axel->y_pos)) return 0;
     axel->y_pos -= AXEL_Y_SPEED;
     return 1;
 }
 
-u16 axel_down_action(sprite_struct *axel) {
-    if (AXEL_ON_MAX_DOWN(axel->y_pos)) return 0;
+u16 axel_down_action(joystick_mediator_struct *mediator) {
+    sprite_struct *axel = mediator->sprite_index;
+    if (JOY_MEDIATOR_IS_LOCKED(mediator) || AXEL_ON_MAX_DOWN(axel->y_pos)) return 0;
     axel->y_pos += AXEL_Y_SPEED;
     return 1;
 }
 
-u16 axel_left_action(sprite_struct *axel) {
-    if (AXEL_ON_MAX_LEFT(axel->x_pos)) return 0;
+u16 axel_left_action(joystick_mediator_struct *mediator) {
+    sprite_struct *axel = mediator->sprite_index;
+    if (JOY_MEDIATOR_IS_LOCKED(mediator) || (axel->x_pos)) return 0;
     axel->x_pos -= AXEL_X_SPEED;
     SPR_setHFlip(axel->sprite, FALSE);
     return 1;
 }
 
-u16 axel_right_action(sprite_struct *axel) {
-    if (AXEL_ON_MAX_RIGHT(axel->x_pos)) return 0;
+u16 axel_right_action(joystick_mediator_struct *mediator) {
+    sprite_struct *axel = mediator->sprite_index;
+    if (JOY_MEDIATOR_IS_LOCKED(mediator) || AXEL_ON_MAX_RIGHT(axel->x_pos)) return 0;
     axel->x_pos += AXEL_X_SPEED;
     SPR_setHFlip(axel->sprite, TRUE);
     return 1;
@@ -55,6 +60,7 @@ void install_axel_sprite(sprite_struct *axel, const SpriteDefinition *axel_sprit
 
     // Setting up the mediator.
     axel_joy_mediator.sprite_index = axel;
+    axel_joy_mediator.lock_frames = 0;
     axel_joy_mediator.up_action = axel_up_action;
     axel_joy_mediator.down_action = axel_down_action;
     axel_joy_mediator.left_action = axel_left_action;
