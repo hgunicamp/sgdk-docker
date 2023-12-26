@@ -5,18 +5,26 @@
 #include <sprite_eng.h>
 #include <joy.h>
 
-#define JOY_NO_ACTION_TAKEN 0
-#define JOY_ACTION_TAKEN 1
+#define JOY_NO_ACTION_TAKEN 0x0000
+#define JOY_ACTION_TAKEN 0x0001
 
-static u16 joy_last_event[JOY_NUM] = { 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000 };
+extern u16 joy_last_event[];
 
 typedef struct joy_mediator {
     sprite_struct *sprite_index;
     s16 lock_frames;
+    u16 joy;
     u16 (*up_action)(struct joy_mediator *mediator);
     u16 (*down_action)(struct joy_mediator *mediator);
     u16 (*rigth_action)(struct joy_mediator *mediator);
     u16 (*left_action)(struct joy_mediator *mediator);
+    u16 (*button_a_action)(struct joy_mediator *mediator);
+    u16 (*button_b_action)(struct joy_mediator *mediator);
+    u16 (*button_c_action)(struct joy_mediator *mediator);
+    u16 (*button_x_action)(struct joy_mediator *mediator);
+    u16 (*button_y_action)(struct joy_mediator *mediator);
+    u16 (*button_z_action)(struct joy_mediator *mediator);
+    u16 (*button_start_action)(struct joy_mediator *mediator);
 } joystick_mediator_struct;
 
 #define JOY_TRIGGER_IDLE_ACTION(mediator, action_alread_taken) do { \
@@ -43,16 +51,14 @@ typedef struct joy_mediator {
         mediator.up_action(&mediator); \
 } while(0)
 
-#define JOY_UNLOCK_MEDIATOR(ptr_mediator)  ptr_mediator->lock_frames = 0
-#define JOY_MEDIATOR_IS_LOCKED(ptr_mediator) ptr_mediator->lock_frames > 0
-#define JOY_GET_CURRENT_STATE(joy) joy_last_event[joy]
+#define JOY_UNLOCK_MEDIATOR(ptr_mediator)  (ptr_mediator->lock_frames = 0)
+#define JOY_MEDIATOR_IS_LOCKED(ptr_mediator) (ptr_mediator->lock_frames > 0)
+#define JOY_GET_CURRENT_STATE(joy) (joy_last_event[joy])
 
 u16 joystick_mediator_no_button_action(joystick_mediator_struct *mediator);
 
-u16 joystick_mediator_get_last_joy_event(u16 joy);
-
 void joystick_mediator_reduce_locking_time(joystick_mediator_struct *mediator);
 
-void joystck_event_listener(u16 joy, u16 changed, u16 state);
+extern void joystick_event_listener(u16 joy, u16 changed, u16 state);
 
 #endif

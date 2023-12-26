@@ -2,11 +2,15 @@
 #include "res/resources.h"
 #include "inc/background.h"
 #include "inc/axel_actions.h"
+#include "inc/joystick_mediator.h"
 
 int main() {
     u16 tile_index = TILE_USER_INDEX;
     background_struct background, foreground;
     sprite_struct axel;
+
+    // Installing Joystick listener.
+    JOY_setEventHandler(joystick_event_listener);
 
     // Init the backgrounds layers.
     background_init(&background, BG_B, PAL0, &bg1);
