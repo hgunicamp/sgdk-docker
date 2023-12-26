@@ -34,7 +34,6 @@ typedef struct joy_mediator {
        break; \
     } \
     mediator.sprite_index->current_animation_index = mediator.sprite_index->idle_animation_index; \
-    SPR_setAnim(mediator.sprite_index->sprite, mediator.sprite_index->idle_animation_index); \
 } while(0)
 
 #define JOY_TRIGGER_X_AXIS_ACTION(mediator, joy_value, action_alread_taken) do { \
@@ -51,9 +50,14 @@ typedef struct joy_mediator {
         mediator.up_action(&mediator); \
 } while(0)
 
-#define JOY_UNLOCK_MEDIATOR(ptr_mediator)  (ptr_mediator->lock_frames = 0)
+#define JOY_TRIGGER_B_BUTTON_ACTION(mediator, joy_value, action_alread_taken) do { \
+    if (!(joy_value & BUTTON_B)) break; \
+    action_alread_taken |= mediator.button_b_action(&mediator);  \
+} while(0)
+
+#define JOY_UNLOCK_MEDIATOR(ptr_mediator)  ptr_mediator->lock_frames = 0
 #define JOY_MEDIATOR_IS_LOCKED(ptr_mediator) (ptr_mediator->lock_frames > 0)
-#define JOY_GET_CURRENT_STATE(joy) (joy_last_event[joy])
+#define JOY_GET_CURRENT_STATE(joy) joy_last_event[joy]
 
 u16 joystick_mediator_no_button_action(joystick_mediator_struct *mediator);
 
