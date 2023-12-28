@@ -136,33 +136,18 @@ typedef struct joy_mediator {
 
 /**
  * \brief
- *     Default function to be used as NOP when no action is installed.
- * \param ptr_mediator
- *     Mediator reference.
- */
-void joystick_mediator_no_button_action(joystick_mediator_struct *mediator);
-
-/**
- * \brief
- *     Reduces the locking time if necessary.
- * \param ptr_mediator
- *     Mediator reference.
- */
-void joystick_mediator_reduce_locking_time(joystick_mediator_struct *mediator);
-
-/**
- * \brief
  *     Joystick initialization function.
- */
-void joystick_init();
-
-/**
- * \brief
- *     Updating joystick event function.
  * \param joy
  *     Joystick's key.
- *     
  */
-void joystick_update_last_event(u16 joy);
+void joystick_init(u16 joy);
+
+/**
+ * \brief
+ *     Updating joystick state at the end of a frame.
+ * \param mediator
+ *     Mediator reference.
+ */
+void joystick_update_state_after_frame(joystick_mediator_struct *mediator);
 
 #endif
