@@ -6,8 +6,8 @@
 joystick_event_struct joy_last_event[JOY_MAX_NUMBER];
 u16 joy_last_frame[JOY_MAX_NUMBER];
 
-u16 joystick_mediator_no_button_action(joystick_mediator_struct *mediator) {
-    return JOY_NO_ACTION_TAKEN;
+void joystick_mediator_no_button_action(joystick_mediator_struct *mediator) {
+    return; 
 }
 
 void joystick_mediator_reduce_locking_time(joystick_mediator_struct *mediator) {

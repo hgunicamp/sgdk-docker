@@ -7,12 +7,6 @@
 // Defines the maximun number of observed joysticks.
 #define JOY_MAX_NUMBER (JOY_1 + 1)
 
-/**
- *  Values to inform that a previous action has alread been taken.
- */
-#define JOY_NO_ACTION_TAKEN 0x0000
-#define JOY_ACTION_TAKEN 0x0001
-
 // Obsevable joystick's events.
 // DPAD Events.
 #define JOY_DPAD_IDLE 0x000
@@ -77,40 +71,7 @@ typedef struct joy_mediator {
     s16 dpad_lock_frames;
     s16 button_lock_frames;
     u16 joy;
-    u16 (*idle_action)(struct joy_mediator *mediator);
-    u16 (*released_up_action)(struct joy_mediator *mediator);
-    u16 (*released_down_action)(struct joy_mediator *mediator);
-    u16 (*released_rigth_action)(struct joy_mediator *mediator);
-    u16 (*released_left_action)(struct joy_mediator *mediator);
-    u16 (*pressed_up_action)(struct joy_mediator *mediator);
-    u16 (*pressed_down_action)(struct joy_mediator *mediator);
-    u16 (*pressed_rigth_action)(struct joy_mediator *mediator);
-    u16 (*pressed_left_action)(struct joy_mediator *mediator);
-    u16 (*holding_up_action)(struct joy_mediator *mediator);
-    u16 (*holding_down_action)(struct joy_mediator *mediator);
-    u16 (*holding_rigth_action)(struct joy_mediator *mediator);
-    u16 (*holding_left_action)(struct joy_mediator *mediator);
-    u16 (*released_button_a_action)(struct joy_mediator *mediator);
-    u16 (*released_button_b_action)(struct joy_mediator *mediator);
-    u16 (*released_button_c_action)(struct joy_mediator *mediator);
-    u16 (*released_button_x_action)(struct joy_mediator *mediator);
-    u16 (*released_button_y_action)(struct joy_mediator *mediator);
-    u16 (*released_button_z_action)(struct joy_mediator *mediator);
-    u16 (*released_button_start_action)(struct joy_mediator *mediator);
-    u16 (*pressed_button_a_action)(struct joy_mediator *mediator);
-    u16 (*pressed_button_b_action)(struct joy_mediator *mediator);
-    u16 (*pressed_button_c_action)(struct joy_mediator *mediator);
-    u16 (*pressed_button_x_action)(struct joy_mediator *mediator);
-    u16 (*pressed_button_y_action)(struct joy_mediator *mediator);
-    u16 (*pressed_button_z_action)(struct joy_mediator *mediator);
-    u16 (*pressed_button_start_action)(struct joy_mediator *mediator);
-    u16 (*holding_button_a_action)(struct joy_mediator *mediator);
-    u16 (*holding_button_b_action)(struct joy_mediator *mediator);
-    u16 (*holding_button_c_action)(struct joy_mediator *mediator);
-    u16 (*holding_button_x_action)(struct joy_mediator *mediator);
-    u16 (*holding_button_y_action)(struct joy_mediator *mediator);
-    u16 (*holding_button_z_action)(struct joy_mediator *mediator);
-    u16 (*holding_button_start_action)(struct joy_mediator *mediator);
+    void (*actions[])(struct joy_mediator *mediator);
 } joystick_mediator_struct;
 
 /**
@@ -148,12 +109,29 @@ typedef struct joy_mediator {
  * \param ptr_mediator
  *     Mediator reference.
  */
-#define JOY_HANDLE_IDLE_EVENT(ptr_mediator) do { \
+#define JOY_HANDLE_IDLE_EVENT(ptr_mediator, idle_func_index) do { \
     if (JOY_MEDIATOR_IS_LOCKED(ptr_mediatori, dpad) && JOY_MEDIATOR_IS_LOCKED(ptr_mediatori, button) break; \
     if ( \
         JOY_GET_CURRENT_EVENT(prt_mediator->joy)->dpad_event == JOY_DPAD_IDLE && \
         JOY_GET_CURRENT_EVENT(prt_mediator->joy)->button_event == JOY_BUTTON_IDLE \
-        ) ptr_mediator->idle_action(ptr_mediator); \
+        ) ptr_mediator->actions[idle_func_index](ptr_mediator); \
+} while(0)
+
+/**
+ * \brief
+ *     General template for mediator glue logic.
+ * \param expression
+ *     Logic expression which triggers an action.
+ * \param func
+ *     Mediator fucntion to be executed.
+ * \param lock_key
+ *     Locking key to be evaluated befeore excute the function.
+ * \param ptr_mediator
+ *     Mediator reference.
+ */
+#define JOY_HANDLE_EVENT_TEMPLATE(expression, func_index, lock_key, ptr_mediator) do { \
+    if (ptr_mediator->lock_key > 0 || !(expression)) break; \
+    ptr_mediator->actions[func_index](ptr_mediator); \
 } while(0)
 
 /**
@@ -162,7 +140,7 @@ typedef struct joy_mediator {
  * \param ptr_mediator
  *     Mediator reference.
  */
-u16 joystick_mediator_no_button_action(joystick_mediator_struct *mediator);
+void joystick_mediator_no_button_action(joystick_mediator_struct *mediator);
 
 /**
  * \brief
