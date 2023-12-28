@@ -6,10 +6,6 @@
 joystick_event_struct joy_last_event[JOY_MAX_NUMBER];
 u16 joy_last_frame[JOY_MAX_NUMBER];
 
-void joystick_mediator_no_button_action(joystick_mediator_struct *mediator) {
-    return; 
-}
-
 void joystick_mediator_reduce_locking_time(joystick_mediator_struct *mediator) {
     if (mediator->dpad_lock_frames) mediator->dpad_lock_frames--;
     if (mediator->button_lock_frames) mediator->button_lock_frames--;
@@ -68,4 +64,9 @@ void joystick_update_last_event(u16 joy) {
          joy_last_event[joy].dpad_event = joystick_update_dpad_event(joy_current_state, difference);
     if (joy_last_event[joy].action_changed)
         joy_last_event[joy].button_event = joystick_update_button_event(joy_current_state, difference);
+}
+
+void joystick_update_state_after_frame(joystick_mediator_struct *mediator) {
+    joystick_mediator_reduce_locking_time(mediator);
+    joystick_update_last_event(mediator->joy);
 }
