@@ -15,7 +15,7 @@ void set_sonic_animation(joystick_mediator_struct *mediator, enum states state) 
     mediator->world_state->state = state;
     sonic->current_animation_index = SONIC_ANIMATION[state];
     SPR_setAnim(sonic->sprite, SONIC_ANIMATION[state]);
-    SPR_setHFlip(sonic->sprite, !i(mediator->world_state->facing_right));
+    SPR_setHFlip(sonic->sprite, !(mediator->world_state->facing_right));
 }
 
 void sonic_set_idle_state(joystick_mediator_struct *mediator) {
@@ -28,7 +28,7 @@ void sonic_set_flip_state(joystick_mediator_struct *mediator) {
     set_sonic_animation(mediator, FLIP);
 }
 
-void sonic_set_speedind_up_state(joystick_mediator_struct *mediator) {
+void sonic_set_speeding_up_state(joystick_mediator_struct *mediator) {
     mediator->dpad_lock_frames = 50;
     set_sonic_animation(mediator, SPEED_UP);
 }
@@ -52,6 +52,16 @@ void sonic_set_face_dow_state(joystick_mediator_struct *mediator) {
     set_sonic_animation(mediator, FACING_DOWN);
 }
 
+void (*functions[])(joystick_mediator_struct *mediator) = {
+    sonic_set_idle_state,
+    sonic_set_flip_state,
+    sonic_set_speeding_up_state,
+    sonic_set_running_state,
+    sonic_set_slow_dow_state,
+    sonic_set_face_up_state,
+    sonic_set_face_dow_state
+};
+
 #define SONIC_CONNECT_STRUCTURES(mediator, ptr_sprite, ptr_world_state) do { \
     ptr_world_state->state = IDLE; \
     ptr_world_state->facing_right = TRUE; \
@@ -60,6 +70,7 @@ void sonic_set_face_dow_state(joystick_mediator_struct *mediator) {
     mediator.dpad_lock_frames = 0; \
     mediator.button_lock_frames = 0; \
     mediator.joy = JOY_1; \
+    mediator.actions = functions; \
 } while(0)
 
 void install_sonic_sprite(
@@ -68,4 +79,70 @@ void install_sonic_sprite(
     state_struct *world_state
 ) {
     SONIC_CONNECT_STRUCTURES(sonic_joy_mediator, sonic, world_state);
+}
+
+#define IS_SONIC_FACING_RIGHT() (sonic_joy_mediator.world_state->facing_right)
+
+////////////////// Transition functions. //////////////////////////
+/**
+ * \brief
+ *     Handles the event of hold RIGHT on the joystick's DPAD.
+ * \param current_state
+ *     Current mesured dpad state.
+ */
+void sonic_handle_dpad_hold_right(enum states current_state) {
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == IDLE && !IS_SONIC_FACING_RIGHT(), FLIP, dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE((current_state == IDLE || current_state == FLIP) && IS_SONIC_FACING_RIGHT(), SPEED_UP, dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == SPEED_UP, RUNNING, dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == RUNNING && !IS_SONIC_FACING_RIGHT(), SLOW_DOWN,dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == SLOW_DOWN && !IS_SONIC_FACING_RIGHT(), FLIP, dpad_lock_frames, (&sonic_joy_mediator));
+}
+
+/**
+ * \brief
+ *     Handles the event of hold LEFT on the joystick's DPAD.
+ * \param current_state
+ *     Current mesured dpad state.
+ */
+void sonic_handle_dpad_hold_left(enum states current_state) {
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == IDLE && IS_SONIC_FACING_RIGHT(), FLIP, dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE((current_state == IDLE || current_state == FLIP) && !IS_SONIC_FACING_RIGHT(), SPEED_UP, dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == SPEED_UP, RUNNING, dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == RUNNING && IS_SONIC_FACING_RIGHT(), SLOW_DOWN,dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == SLOW_DOWN && IS_SONIC_FACING_RIGHT(), FLIP, dpad_lock_frames, (&sonic_joy_mediator));
+}
+
+/**
+ * \brief
+ *     Handles the event of hold UP on the joystick's DPAD.
+ * \param current_state
+ *     Current mesured dpad state.
+ */
+void sonic_handle_dpad_hold_up(enum states current_state) {
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == IDLE, FACING_UP, dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == RUNNING, SLOW_DOWN, dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == SLOW_DOWN, FACING_UP, dpad_lock_frames, (&sonic_joy_mediator));
+}
+
+/**
+ * \brief
+ *     Handles the event of hold DOWN on the joystick's DPAD.
+ * \param current_state
+ *     Current mesured dpad state.
+ */
+void sonic_handle_dpad_hold_down(enum states current_state) {
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == IDLE, FACING_DOWN, dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == RUNNING, SLOW_DOWN, dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == SLOW_DOWN, FACING_DOWN, dpad_lock_frames, (&sonic_joy_mediator));
+}
+
+/**
+ * \brief
+ *     Handles the event of IDLE the joystick's DPAD.
+ * \param current_state
+ *     Current mesured dpad state.
+ */
+void sonic_handle_dpad_idle(enum states current_state) {
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == RUNNING, SLOW_DOWN, dpad_lock_frames, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == SLOW_DOWN, IDLE, dpad_lock_frames, (&sonic_joy_mediator));
 }

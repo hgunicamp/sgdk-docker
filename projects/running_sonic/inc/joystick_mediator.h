@@ -73,7 +73,7 @@ typedef struct joy_mediator {
     s16 dpad_lock_frames;
     s16 button_lock_frames;
     u16 joy;
-    void (*actions[])(struct joy_mediator *mediator);
+    void (**actions)(struct joy_mediator *mediator);
 } joystick_mediator_struct;
 
 /**
