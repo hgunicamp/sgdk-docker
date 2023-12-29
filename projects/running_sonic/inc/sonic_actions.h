@@ -24,9 +24,7 @@ void install_sonic_sprite(
 /**
  * \brief
  *    Update the sonic's sptrite after the end of the frame.
- * \param sonic
- *    Sprite struct reference.
  */
-void update_sonic_sprite_after_frame(sprite_struct *sonic);
+void update_sonic_sprite_after_frame();
 
 #endif

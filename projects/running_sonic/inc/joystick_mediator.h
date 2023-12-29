@@ -112,7 +112,7 @@ typedef struct joy_mediator {
  *     Mediator reference.
  */
 #define JOY_HANDLE_IDLE_EVENT(ptr_mediator, idle_func_index) do { \
-    if (JOY_MEDIATOR_IS_LOCKED(ptr_mediatori, dpad) && JOY_MEDIATOR_IS_LOCKED(ptr_mediatori, button) break; \
+    if (JOY_MEDIATOR_IS_LOCKED(ptr_mediator, dpad) && JOY_MEDIATOR_IS_LOCKED(ptr_mediator, button) break; \
     if ( \
         JOY_GET_CURRENT_EVENT(prt_mediator->joy)->dpad_event == JOY_DPAD_IDLE && \
         JOY_GET_CURRENT_EVENT(prt_mediator->joy)->button_event == JOY_BUTTON_IDLE \
@@ -132,9 +132,29 @@ typedef struct joy_mediator {
  *     Mediator reference.
  */
 #define JOY_HANDLE_EVENT_TEMPLATE(expression, func_index, lock_key, ptr_mediator) do { \
-    if (ptr_mediator->lock_key > 0 || !(expression)) break; \
+    if (JOY_MEDIATOR_IS_LOCKED(ptr_mediator, lock_key) || !(expression)) break; \
     ptr_mediator->actions[func_index](ptr_mediator); \
 } while(0)
+
+/**
+ * \brief
+ *     Filter a event accaording to rules.
+ * \param filter_rules
+ *     Bitwise AND filter.
+ * \param event_value
+ *     Original value.
+ */
+#define JOY_HANDLE_FILTER_JOYSTICK_EVENT(filter_rules, event_value) ((filter_rules) & event_value)
+
+/**
+ * \brief
+ *     Filter a event accaording to rules.
+ * \param filter_rules
+ *     Bitwise EXCLUSIVE filter.
+ * \param event_value
+ *     Original value.
+ */
+#define JOY_HANDLE_FILTER_JOYSTICK_EXCLISVE_EVENT(filter_rules, event_value) (!((filter_rules) ^ event_value))
 
 /**
  * \brief
