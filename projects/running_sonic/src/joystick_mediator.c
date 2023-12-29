@@ -1,7 +1,7 @@
 #include "../inc/joystick_mediator.h"
 
 #define JOY_DPAD_MASK 0x000f
-#define JOY_BUTTON_MASK 0x00f0
+#define JOY_BUTTON_MASK 0x0ff0
 
 joystick_event_struct joy_last_event[JOY_MAX_NUMBER];
 u16 joy_last_frame[JOY_MAX_NUMBER];
