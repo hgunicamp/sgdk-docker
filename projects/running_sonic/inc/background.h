@@ -21,8 +21,8 @@ typedef struct {
 } background_struct;
 
 // Parallax speed.
-const u16 BACKGROUND_PARALLAX_SPEED = { 0, 0, 0, 1, 0};
-const u16 FOREGROUND_PARALLAX_SPEED = { 0, 0, 1, 2, 1};
+const u16 BACKGROUND_PARALLAX_SPEED = { 0, 0, 0, 1, 0, 0, 0 };
+const u16 FOREGROUND_PARALLAX_SPEED = { 0, 0, 1, 2, 1, 0, 0 };
 
 /**
  * \brief

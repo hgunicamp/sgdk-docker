@@ -6,7 +6,7 @@
  *    Possible states in the world.
  */
 enum states {
-    IDLE, FLIP, SPEED_UP, RUNNING, SLOW_DOWN
+    IDLE, FLIP, SPEED_UP, RUNNING, SLOW_DOWN, FACING_UP, FACING_DOWN
 };
 
 /**
