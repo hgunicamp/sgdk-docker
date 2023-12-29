@@ -1,8 +1,8 @@
 #ifndef _JOYSTICK_MEDIATOR_H_
 #define _JOYSTICK_MEDIATOR_H_
 
-#include <joy.h>
 #include <types.h>
+#include <joy.h>
 #include "states.h"
 
 // Defines the maximun number of observed joysticks.
@@ -154,7 +154,7 @@ typedef struct joy_mediator {
  * \param event_value
  *     Original value.
  */
-#define JOY_HANDLE_FILTER_JOYSTICK_EXCLISVE_EVENT(filter_rules, event_value) (!((filter_rules) ^ event_value))
+#define JOY_HANDLE_FILTER_JOYSTICK_EXCLUSIVE_EVENT(filter_rules, event_value) (!((filter_rules) ^ event_value))
 
 /**
  * \brief

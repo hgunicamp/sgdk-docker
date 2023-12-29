@@ -1,6 +1,10 @@
 #include <genesis.h>
 #include "../inc/background.h"
 
+// Parallax speed.
+const u16 BACKGROUND_PARALLAX_SPEED[] = { 0, 0, 0, 1, 0, 0, 0 };
+const u16 FOREGROUND_PARALLAX_SPEED[] = { 0, 0, 1, 2, 1, 0, 0 };
+
 void background_init(
     background_struct *background,
     VDPPlane layer,
