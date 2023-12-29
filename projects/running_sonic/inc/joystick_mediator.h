@@ -68,7 +68,7 @@ extern joystick_event_struct joy_last_event[];
  *     Mediotor to link a resource to a joystick event.
  */
 typedef struct joy_mediator {
-    state_struct *state;
+    state_struct *world_state;
     void *resource_index;
     s16 dpad_lock_frames;
     s16 button_lock_frames;
