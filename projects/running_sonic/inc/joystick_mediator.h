@@ -3,6 +3,7 @@
 
 #include <joy.h>
 #include <types.h>
+#include "states.h"
 
 // Defines the maximun number of observed joysticks.
 #define JOY_MAX_NUMBER (JOY_1 + 1)
@@ -67,6 +68,7 @@ extern joystick_event_struct joy_last_event[];
  *     Mediotor to link a resource to a joystick event.
  */
 typedef struct joy_mediator {
+    state_struct *state;
     void *resource_index;
     s16 dpad_lock_frames;
     s16 button_lock_frames;
