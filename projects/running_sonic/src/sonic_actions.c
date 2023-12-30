@@ -8,7 +8,7 @@
 
 #define SONIC_MAX_Y_POS 50
 #define SONIC_MIN_Y_POS 150
-#define SONIC_UP_SPEED 1
+#define SONIC_UP_SPEED 4
 
 // Jumping states.
 enum jump {
@@ -32,12 +32,12 @@ void sonic_set_idle_state(joystick_mediator_struct *mediator) {
 
 void sonic_set_flip_state(joystick_mediator_struct *mediator) {
     mediator->world_state->facing_right = !(mediator->world_state->facing_right);
-    mediator->dpad_lock_frames = 12;
+    mediator->dpad_lock_frames = 5;
     set_sonic_animation(mediator, ST_FLIP);
 }
 
 void sonic_set_speeding_up_state(joystick_mediator_struct *mediator) {
-    mediator->dpad_lock_frames = 15;
+    mediator->dpad_lock_frames = 5;
     set_sonic_animation(mediator, ST_SPEED_UP);
 }
 
@@ -46,17 +46,17 @@ void sonic_set_running_state(joystick_mediator_struct *mediator) {
 }
 
 void sonic_set_slow_dow_state(joystick_mediator_struct *mediator) {
-    mediator->dpad_lock_frames = 20;
+    mediator->dpad_lock_frames = 10;
     set_sonic_animation(mediator, ST_SLOW_DOWN);
 }
 
 void sonic_set_face_up_state(joystick_mediator_struct *mediator) {
-    mediator->dpad_lock_frames = 12;
+    mediator->dpad_lock_frames = 5;
     set_sonic_animation(mediator, ST_FACING_UP);
 }
 
 void sonic_set_face_dow_state(joystick_mediator_struct *mediator) {
-    mediator->dpad_lock_frames = 12;
+    mediator->dpad_lock_frames = 5;
     set_sonic_animation(mediator, ST_FACING_DOWN);
 }
 
