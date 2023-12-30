@@ -6,7 +6,7 @@
 #include "../inc/sonic_actions.h"
 #include "../inc/joystick_mediator.h"
 
-#define SONIC_MAX_Y_POS 80
+#define SONIC_MAX_Y_POS 50
 #define SONIC_MIN_Y_POS 150
 #define SONIC_UP_SPEED 1
 
@@ -23,7 +23,6 @@ void set_sonic_animation(joystick_mediator_struct *mediator, enum states state) 
     sprite_struct *sonic = (sprite_struct *) mediator->resource_index;
     mediator->world_state->state = state;
     sonic->current_animation_index = SONIC_ANIMATION[state];
-    SPR_setAnim(sonic->sprite, SONIC_ANIMATION[state]);
     SPR_setHFlip(sonic->sprite, !(mediator->world_state->facing_right));
 }
 
@@ -64,10 +63,7 @@ void sonic_set_face_dow_state(joystick_mediator_struct *mediator) {
 void sonic_update_jumping_state(joystick_mediator_struct *mediator) {
     sprite_struct *sonic = (sprite_struct *) mediator->resource_index;
     // Do nothing if reached the floor.
-    if (jump_state != JUMP_UP && sonic->y_pos >= SONIC_MIN_Y_POS) {
-        SPR_setAnim(sonic->sprite, SONIC_ANIMATION[ST_FLIP]);
-        return;
-    }
+    if (jump_state != JUMP_UP && sonic->y_pos >= SONIC_MIN_Y_POS) return;
     //  Return to floor.
     if (jump_state != JUMP_UP) {
         sonic->y_pos += SONIC_UP_SPEED;
@@ -81,7 +77,7 @@ void sonic_update_jumping_state(joystick_mediator_struct *mediator) {
         jump_state = NOT_JUMP;
     }
 
-    SPR_setAnim(sonic->sprite, SONIC_ANIMATION[ST_JUMPING]);
+   sonic->current_animation_index = SONIC_ANIMATION[(sonic->y_pos >= SONIC_MIN_Y_POS) ? ST_FLIP : ST_JUMPING];
 }
 
 void (*functions[])(joystick_mediator_struct *mediator) = {
@@ -132,6 +128,7 @@ void sonic_handle_dpad_hold_right(enum states current_state) {
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_SLOW_DOWN && !IS_SONIC_FACING_RIGHT(), ST_FLIP, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_UP, ST_IDLE, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_DOWN, ST_IDLE, dpad, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_RUNNING, ST_RUNNING, dpad, (&sonic_joy_mediator));
 }
 
 /**
@@ -148,6 +145,7 @@ void sonic_handle_dpad_hold_left(enum states current_state) {
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_SLOW_DOWN && IS_SONIC_FACING_RIGHT(), ST_FLIP, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_UP, ST_IDLE, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_DOWN, ST_IDLE, dpad, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_RUNNING, ST_RUNNING, dpad, (&sonic_joy_mediator));
 }
 
 /**
@@ -160,6 +158,7 @@ void sonic_handle_dpad_hold_up(enum states current_state) {
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_IDLE, ST_FACING_UP, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_RUNNING, ST_SLOW_DOWN, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_SLOW_DOWN, ST_FACING_UP, dpad, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_UP, ST_FACING_UP, dpad, (&sonic_joy_mediator));
 }
 
 /**
@@ -172,6 +171,7 @@ void sonic_handle_dpad_hold_down(enum states current_state) {
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_IDLE, ST_FACING_DOWN, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_RUNNING, ST_SLOW_DOWN, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_SLOW_DOWN, ST_FACING_DOWN, dpad, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_DOWN, ST_FACING_DOWN, dpad, (&sonic_joy_mediator));
 }
 
 /**
@@ -186,6 +186,7 @@ void sonic_handle_dpad_idle(enum states current_state) {
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FLIP, ST_IDLE, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_UP, ST_IDLE, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_DOWN, ST_IDLE, dpad, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_IDLE, ST_IDLE, dpad, (&sonic_joy_mediator));
 }
 
 void sonic_handle_button_a_pressed(joystick_mediator_struct *mediator) {
@@ -234,6 +235,7 @@ void update_sonic_sprite_after_frame() {
     sprite_struct *sonic = (sprite_struct *) sonic_joy_mediator.resource_index;
     sonic_interpret_joystick_status();
     sonic_update_jumping_state(&sonic_joy_mediator);
+    SPR_setAnim(sonic->sprite, sonic->current_animation_index);
     SPR_setPosition(sonic->sprite, sonic->x_pos, sonic->y_pos);
     joystick_update_state_after_frame(&sonic_joy_mediator);
 }
