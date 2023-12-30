@@ -159,10 +159,10 @@ void sonic_interpret_joystick_status() {
     joystick_event_struct current_event = JOY_GET_CURRENT_EVENT(sonic_joy_mediator.joy);
     enum dpad_event dpad_events[] = {
         JOY_HANDLE_FILTER_JOYSTICK_EXCLUSIVE_EVENT(JOY_DPAD_IDLE, current_event.dpad_event),
-        JOY_HANDLE_FILTER_JOYSTICK_EVENT(JOY_DPAD_HOLDING_LEFT, current_event.dpad_event),
-        JOY_HANDLE_FILTER_JOYSTICK_EVENT(JOY_DPAD_HOLDING_RIGHT, current_event.dpad_event),
-        JOY_HANDLE_FILTER_JOYSTICK_EXCLUSIVE_EVENT(JOY_DPAD_HOLDING_UP, current_event.dpad_event),
-        JOY_HANDLE_FILTER_JOYSTICK_EXCLUSIVE_EVENT(JOY_DPAD_HOLDING_DOWN, current_event.dpad_event),
+        JOY_HANDLE_FILTER_JOYSTICK_EVENT(JOY_DPAD_PRESSED_LEFT, current_event.dpad_event),
+        JOY_HANDLE_FILTER_JOYSTICK_EVENT(JOY_DPAD_PRESSED_RIGHT, current_event.dpad_event),
+        JOY_HANDLE_FILTER_JOYSTICK_EXCLUSIVE_EVENT(JOY_DPAD_PRESSED_UP, current_event.dpad_event),
+        JOY_HANDLE_FILTER_JOYSTICK_EXCLUSIVE_EVENT(JOY_DPAD_PRESSED_DOWN, current_event.dpad_event),
     };
 
     SONIC_TRIGGER_JOY_DPAD_EVENT(DPAD_IDLE, sonic_handle_dpad_idle);
