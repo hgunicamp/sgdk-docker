@@ -96,6 +96,8 @@ void sonic_handle_dpad_hold_right(enum states current_state) {
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_SPEED_UP, ST_RUNNING, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_RUNNING && !IS_SONIC_FACING_RIGHT(), ST_SLOW_DOWN,dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_SLOW_DOWN && !IS_SONIC_FACING_RIGHT(), ST_FLIP, dpad, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_UP, ST_IDLE, dpad, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_DOWN, ST_IDLE, dpad, (&sonic_joy_mediator));
 }
 
 /**
@@ -110,6 +112,8 @@ void sonic_handle_dpad_hold_left(enum states current_state) {
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_SPEED_UP, ST_RUNNING, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_RUNNING && IS_SONIC_FACING_RIGHT(), ST_SLOW_DOWN, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_SLOW_DOWN && IS_SONIC_FACING_RIGHT(), ST_FLIP, dpad, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_UP, ST_IDLE, dpad, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_DOWN, ST_IDLE, dpad, (&sonic_joy_mediator));
 }
 
 /**
@@ -146,6 +150,8 @@ void sonic_handle_dpad_idle(enum states current_state) {
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_RUNNING, ST_SLOW_DOWN, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_SLOW_DOWN, ST_IDLE, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FLIP, ST_IDLE, dpad, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_UP, ST_IDLE, dpad, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_DOWN, ST_IDLE, dpad, (&sonic_joy_mediator));
 }
 
 enum dpad_event { DPAD_IDLE, DPAD_LEFT, DPAD_RIGHT, DPAD_UP, DPAD_DOWN };
@@ -162,8 +168,8 @@ void sonic_interpret_joystick_status() {
         JOY_HANDLE_FILTER_JOYSTICK_EXCLUSIVE_EVENT(JOY_DPAD_IDLE, current_event.dpad_event),
         JOY_HANDLE_FILTER_JOYSTICK_EVENT(JOY_DPAD_PRESSED_LEFT, current_event.dpad_event),
         JOY_HANDLE_FILTER_JOYSTICK_EVENT(JOY_DPAD_PRESSED_RIGHT, current_event.dpad_event),
-        JOY_HANDLE_FILTER_JOYSTICK_EXCLUSIVE_EVENT(JOY_DPAD_PRESSED_UP, current_event.dpad_event),
-        JOY_HANDLE_FILTER_JOYSTICK_EXCLUSIVE_EVENT(JOY_DPAD_PRESSED_DOWN, current_event.dpad_event),
+        JOY_HANDLE_FILTER_JOYSTICK_EXCLUSIVE_EVENT(JOY_DPAD_ONLY_UP, current_event.dpad_event),
+        JOY_HANDLE_FILTER_JOYSTICK_EXCLUSIVE_EVENT(JOY_DPAD_ONLY_DOWN, current_event.dpad_event),
     };
 
     SONIC_TRIGGER_JOY_DPAD_EVENT(DPAD_IDLE, sonic_handle_dpad_idle);
