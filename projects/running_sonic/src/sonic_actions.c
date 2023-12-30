@@ -32,12 +32,12 @@ void sonic_set_idle_state(joystick_mediator_struct *mediator) {
 
 void sonic_set_flip_state(joystick_mediator_struct *mediator) {
     mediator->world_state->facing_right = !(mediator->world_state->facing_right);
-    mediator->dpad_lock_frames = 5;
+    mediator->dpad_lock_frames = 12;
     set_sonic_animation(mediator, ST_FLIP);
 }
 
 void sonic_set_speeding_up_state(joystick_mediator_struct *mediator) {
-    mediator->dpad_lock_frames = 5;
+    mediator->dpad_lock_frames = 12;
     set_sonic_animation(mediator, ST_SPEED_UP);
 }
 
@@ -46,17 +46,17 @@ void sonic_set_running_state(joystick_mediator_struct *mediator) {
 }
 
 void sonic_set_slow_dow_state(joystick_mediator_struct *mediator) {
-    mediator->dpad_lock_frames = 10;
+    mediator->dpad_lock_frames = 12;
     set_sonic_animation(mediator, ST_SLOW_DOWN);
 }
 
 void sonic_set_face_up_state(joystick_mediator_struct *mediator) {
-    mediator->dpad_lock_frames = 5;
+    mediator->dpad_lock_frames = 12;
     set_sonic_animation(mediator, ST_FACING_UP);
 }
 
 void sonic_set_face_dow_state(joystick_mediator_struct *mediator) {
-    mediator->dpad_lock_frames = 5;
+    mediator->dpad_lock_frames = 12;
     set_sonic_animation(mediator, ST_FACING_DOWN);
 }
 
@@ -182,6 +182,7 @@ void sonic_handle_dpad_hold_down(enum states current_state) {
  */
 void sonic_handle_dpad_idle(enum states current_state) {
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_RUNNING, ST_SLOW_DOWN, dpad, (&sonic_joy_mediator));
+    JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_SPEED_UP, ST_IDLE, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_SLOW_DOWN, ST_IDLE, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FLIP, ST_IDLE, dpad, (&sonic_joy_mediator));
     JOY_HANDLE_EVENT_TEMPLATE(current_state == ST_FACING_UP, ST_IDLE, dpad, (&sonic_joy_mediator));
