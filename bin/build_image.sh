@@ -4,7 +4,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SGDK_PLATFORM_DOCKER_BASE_DIR="${SCRIPT_DIR}/../platform"
 DOWNLOAD_DIR="${SCRIPT_DIR}/../downloads"
-SGDK_PACKAGE_SRC="https://github.com/Stephane-D/SGDK/releases/download/v1.90/sgdk190.7z"
+SGDK_PACKAGE_SRC="https://github.com/Stephane-D/SGDK/releases/download/v2.00/sgdk200.7z"
 SGDK_PACKAGE_FILE="${DOWNLOAD_DIR}/sgdk.7z"
 SGDK_PACKAGE_TARGET="${SGDK_PLATFORM_DOCKER_BASE_DIR}/sgdk"
 
