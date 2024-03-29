@@ -77,7 +77,7 @@ void sonic_update_jumping_state(joystick_mediator_struct *mediator) {
         jump_state = NOT_JUMP;
     }
 
-   sonic->current_animation_index = SONIC_ANIMATION[(sonic->y_pos >= SONIC_MIN_Y_POS) ? ST_FLIP : ST_JUMPING];
+    sonic->current_animation_index = SONIC_ANIMATION[(sonic->y_pos >= SONIC_MIN_Y_POS) ? ST_FLIP : ST_JUMPING];
 }
 
 void (*functions[])(joystick_mediator_struct *mediator) = {
@@ -228,8 +228,8 @@ void sonic_interpret_joystick_status() {
     SONIC_TRIGGER_JOY_DPAD_EVENT(DPAD_DOWN, sonic_handle_dpad_hold_down);
 
     // Button events.
-   SONIC_TRIGGER_JOY_BUTTON_EVENT(button_a_pressed, sonic_handle_button_a_pressed);
-   SONIC_TRIGGER_JOY_BUTTON_EVENT(!button_a_pressed, sonic_handle_button_a_released);
+    SONIC_TRIGGER_JOY_BUTTON_EVENT(button_a_pressed, sonic_handle_button_a_pressed);
+    SONIC_TRIGGER_JOY_BUTTON_EVENT(!button_a_pressed, sonic_handle_button_a_released);
 }
 
 void update_sonic_sprite_after_frame() {

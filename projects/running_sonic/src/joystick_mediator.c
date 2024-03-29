@@ -57,7 +57,7 @@ void joystick_update_last_event(u16 joy) {
     joy_last_event[joy].action_changed = (difference & JOY_BUTTON_MASK) != 0;
 
     if (joy_last_event[joy].dpad_chaged)
-         joy_last_event[joy].dpad_event = joystick_update_dpad_event(joy_current_state);
+        joy_last_event[joy].dpad_event = joystick_update_dpad_event(joy_current_state);
     if (joy_last_event[joy].action_changed)
         joy_last_event[joy].button_event = joystick_update_button_event(joy_current_state);
 }
